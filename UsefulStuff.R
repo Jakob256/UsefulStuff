@@ -1,3 +1,46 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#### copy for importing this script ####
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# if(!require("devtools")){install.packages("devtools")}
+# library(devtools)
+# source_url("https://raw.githubusercontent.com/Jakob256/UsefulStuff/main/UsefulStuff.R")
+
+
+#~~~~~~~~~~~~~~
+#### pause ####
+#~~~~~~~~~~~~~~
+
+
+.pause <- function(filePath){
+  if (file.exists(filePath)){
+    i=0
+    symbols=c("-","\\","|","/")
+    cat(rep("-",47),"\n",sep="")
+    time=as.character(Sys.time())
+    
+    while(file.exists(filePath)){
+      i=i%%4+1
+      
+      cat("\r",rep(symbols[i],3)," Process paused    @ ",time," ",rep(symbols[i],3),sep="")
+      Sys.sleep(1)
+      
+    }
+    
+    cat("\r--- Process paused    @ ",time," ---\n",sep="")
+    time=as.character(Sys.time())
+    cat("\r--- Process continued @ ",time," ---\n",sep="")
+    cat(rep("-",47),"\n",sep="")
+  }
+}
+
+
+#~~~~~~~~~~~~~~~~~~
+#### .progress ####
+#~~~~~~~~~~~~~~~~~~
+
+
 .progPar <<- as.data.frame(matrix(0,ncol=5))
 colnames(.progPar)=c("progressStartTime","lastInfo","setType","totalLength","done")
 
@@ -90,60 +133,13 @@ colnames(.progPar)=c("progressStartTime","lastInfo","setType","totalLength","don
     if (remainingTime>=60){remainingSec=paste(rep("0",2-nchar(remainingSec)),remainingSec,sep="")}
     if (remainingTime>=3600){remainingMin=paste(rep("0",2-nchar(remainingMin)),remainingMin,sep="")}
     if (remainingTime<60){
-      cat("Remaining: ",remainingSec," sec;  (",done,"/",.progPar$totalLength,")\n",sep="")
+      cat("Remaining: ",remainingSec," sec;  (",done,"/",.progPar$totalLength,")\r",sep="")
     } else if (remainingTime<3600){
-      cat("Remaining: ",remainingMin,":",remainingSec," min;  (",done,"/",.progPar$totalLength,")\n",sep="")
+      cat("Remaining: ",remainingMin,":",remainingSec," min;  (",done,"/",.progPar$totalLength,")\r",sep="")
     } else {
-      cat("Remaining: ",remainingH,":",remainingMin,":",remainingSec," h;  (",done,"/",.progPar$totalLength,")\n",sep="")
+      cat("Remaining: ",remainingH,":",remainingMin,":",remainingSec," h;  (",done,"/",.progPar$totalLength,")\r",sep="")
     }
     
     .progPar$lastInfo<<-time
   }
 }
-
-
-
-
-if(FALSE){
-  f <- function(){Sys.sleep(0.1)}
-  g <- function(){Sys.sleep(1)}
-  h <- function(){Sys.sleep(2)}
-  
-  for (i in 1:362){
-    .progress(i,362)
-    ## stuff here
-    g()
-  }
-  
-  for (i in 101:400){
-    .progress(i,101,400)
-    ## stuff here
-    f()
-  }
-  
-  for (n in LETTERS){
-    .progress(n,LETTERS)
-    f()
-    ## stuff here
-  }
-  
-  .progressStart(20*21/2)
-  for (i in 1:20){
-    for (j in i:20){
-      .progress()
-      g()
-    }
-  }
-}
-
-
-# you may pass
-
-#1) the set
-#2) the endpoint of the set (assuming start=1)
-#3) the start and endpoint of the set
-#4) nothing at all
-
-
-
-# simply pass it in chronological order
